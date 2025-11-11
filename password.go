@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/lupa95/passwork-client-go/internal/utils"
+	"github.com/treasure33/passwork-client-go/internal/utils"
 )
 
 // Get a password by ID

@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/lupa95/passwork-client-go/internal/utils"
+	"github.com/treasure33/passwork-client-go/internal/utils"
 )
 
 type Client struct {

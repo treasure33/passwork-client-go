@@ -8,7 +8,7 @@ The client can currently perform CRUD operations on passwords, folders and vault
 ```go
 package main
 
-import "github.com/lupa95/passwork-client-go"
+import "github.com/treasure33/passwork-client-go"
 
 func main() {
 	host := "https://my-passwork-instance.com/api/v4"
