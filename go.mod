@@ -1,4 +1,4 @@
-module github.com/lupa95/passwork-client-go
+module github.com/treasure33/passwork-client-go
 
 go 1.23.5
 
