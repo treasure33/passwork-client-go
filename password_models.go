@@ -1,5 +1,7 @@
 package passwork
 
+import "encoding/json"
+
 type PasswordResponse struct {
 	Status string
 	Code   string // passwordNull, accessDenied
@@ -10,6 +12,28 @@ type PasswordSearchResponse struct {
 	Status string
 	Code   string
 	Data   []PasswordResponseData
+}
+
+// UnmarshalJSON implements custom unmarshaling to support both API v1 and v4 formats
+// API v1 uses "items" field, API v4 uses "Data" field
+func (p *PasswordSearchResponse) UnmarshalJSON(data []byte) error {
+	// Try API v1 format first (items field)
+	var v1Format struct {
+		Items []PasswordResponseData `json:"items"`
+	}
+	if err := json.Unmarshal(data, &v1Format); err == nil && v1Format.Items != nil {
+		p.Data = v1Format.Items
+		return nil
+	}
+	
+	// Try API v4 format (Status, Code, Data fields)
+	type Alias PasswordSearchResponse
+	aux := &struct {
+		*Alias
+	}{
+		Alias: (*Alias)(p),
+	}
+	return json.Unmarshal(data, aux)
 }
 
 type PasswordResponseData struct {

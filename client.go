@@ -88,7 +88,7 @@ func (c *Client) Logout() error {
 // Sends HTTP request to URL with method and body
 // Returns response body
 func (c *Client) sendRequest(method string, url string, body io.Reader) ([]byte, int, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, method, url, body)

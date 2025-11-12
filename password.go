@@ -84,7 +84,9 @@ func (c *Client) SearchPassword(request PasswordSearchRequest) (PasswordSearchRe
 		return responseObject, err
 	}
 
-	if responseObject.Status != "success" {
+	// Check status only if it's present (API v4 format)
+	// API v1 doesn't return Status field
+	if responseObject.Status != "" && responseObject.Status != "success" {
 		return responseObject, errors.New(responseObject.Code)
 	}
 
