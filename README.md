@@ -11,7 +11,7 @@ package main
 import "github.com/treasure33/passwork-client-go"
 
 func main() {
-	host := "https://my-passwork-instance.com/api/v4"
+	host := "https://my-passwork-instance.com/api/v1"
 	apiKey := "my-secret-api-key"
 	timeout := time.Second * 30
 
@@ -52,7 +52,7 @@ func main() {
 
 ```go
 export PASSWORK_API_KEY="api-key"
-export PASSWORK_HOST="https://my-passwork-instance/api/v4"
+export PASSWORK_HOST="https://my-passwork-instance/api/v1"
 export PASSWORK_VAULT_ID="vault-id"
 
 go test

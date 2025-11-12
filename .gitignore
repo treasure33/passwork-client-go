@@ -25,3 +25,6 @@ go.work
 
 # Scripts
 *.sh
+
+# JetBrains
+.idea

@@ -12,7 +12,7 @@ import (
 
 // Get a password by ID
 func (c *Client) GetPassword(pwId string) (PasswordResponse, error) {
-	url := fmt.Sprintf("%s/passwords/%s", c.BaseURL, pwId)
+	url := fmt.Sprintf("%s/items/%s", c.BaseURL, pwId)
 	method := http.MethodGet
 	var responseObject PasswordResponse
 	var err error
@@ -38,7 +38,7 @@ func (c *Client) GetPassword(pwId string) (PasswordResponse, error) {
 
 // Search for password by name
 func (c *Client) SearchPassword(request PasswordSearchRequest) (PasswordSearchResponse, error) {
-	url := fmt.Sprintf("%s/passwords/search", c.BaseURL)
+	url := fmt.Sprintf("%s/items/search", c.BaseURL)
 	method := http.MethodPost
 	var responseObject PasswordSearchResponse
 	var err error
@@ -68,7 +68,7 @@ func (c *Client) SearchPassword(request PasswordSearchRequest) (PasswordSearchRe
 }
 
 func (c *Client) AddPassword(pwRequest PasswordRequest) (PasswordResponse, error) {
-	url := fmt.Sprintf("%s/passwords", c.BaseURL)
+	url := fmt.Sprintf("%s/items", c.BaseURL)
 	method := http.MethodPost
 	var responseObject PasswordResponse
 	var err error
@@ -98,7 +98,7 @@ func (c *Client) AddPassword(pwRequest PasswordRequest) (PasswordResponse, error
 }
 
 func (c *Client) EditPassword(pwId string, request PasswordRequest) (PasswordResponse, error) {
-	url := fmt.Sprintf("%s/passwords/%s", c.BaseURL, pwId)
+	url := fmt.Sprintf("%s/items/%s", c.BaseURL, pwId)
 	method := http.MethodPut
 	var responseObject PasswordResponse
 
@@ -127,7 +127,7 @@ func (c *Client) EditPassword(pwId string, request PasswordRequest) (PasswordRes
 }
 
 func (c *Client) DeletePassword(pwId string) (DeleteResponse, error) {
-	url := fmt.Sprintf("%s/passwords/%s", c.BaseURL, pwId)
+	url := fmt.Sprintf("%s/items/%s", c.BaseURL, pwId)
 	method := http.MethodDelete
 	var responseObject DeleteResponse
 
