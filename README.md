@@ -50,14 +50,36 @@ func main() {
 
 ## Running tests
 
-```go
+### Option 1: Using .env file (recommended)
+
+Create a `.env` file in the project root:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your credentials:
+
+```
+PASSWORK_API_KEY=your-api-key
+PASSWORK_HOST=https://your-passwork-instance.com/api/v1
+PASSWORK_VAULT_ID=your-vault-id
+```
+
+Run tests:
+
+```bash
+go test
+# or with verbose output
+go test -v -cover
+```
+
+### Option 2: Using environment variables
+
+```bash
 export PASSWORK_API_KEY="api-key"
 export PASSWORK_HOST="https://my-passwork-instance/api/v1"
 export PASSWORK_VAULT_ID="vault-id"
 
-go test
-
-// More elaborate
 go test -v -cover
-
 ```

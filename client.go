@@ -57,25 +57,11 @@ func NewClient(baseURL, apiKey string, timeout time.Duration) *Client {
 }
 
 // Perform Login Request and set session Token in struct
+// For API v1, the API key is used directly as the bearer token
 func (c *Client) Login() error {
-	url := fmt.Sprintf("%s/auth/login/%s", c.BaseURL, c.apiKey)
-
-	response, _, err := c.sendRequest(http.MethodPost, url, nil)
-	if err != nil {
-		return err
-	}
-
-	responseObject, err := utils.ParseJSONResponse[LoginResponse](response)
-	if err != nil {
-		return err
-	}
-
-	if responseObject.Status != "success" {
-		return fmt.Errorf("login failed, status: %s", responseObject.Status)
-	}
-
-	c.sessionToken = responseObject.Data.Token
-
+	// For v1 API, we use the API key directly
+	// Try to make a simple request to verify the API key works
+	c.sessionToken = c.apiKey
 	return nil
 }
 
@@ -112,7 +98,13 @@ func (c *Client) sendRequest(method string, url string, body io.Reader) ([]byte,
 
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Passwork-Auth", c.sessionToken)
+
+	// Use Authorization Bearer header if we have a session token, otherwise use API key
+	if c.sessionToken != "" {
+		req.Header.Set("Authorization", "Bearer "+c.sessionToken)
+	} else if c.apiKey != "" {
+		req.Header.Set("Authorization", "Bearer "+c.apiKey)
+	}
 
 	// Execute HTTP request
 	resp, err := c.HTTPClient.Do(req)

@@ -6,11 +6,12 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/treasure33/passwork-client-go/internal/utils"
 )
 
-// Get a password by ID
+// GetPassword Get a password by ID
 func (c *Client) GetPassword(pwId string) (PasswordResponse, error) {
 	url := fmt.Sprintf("%s/items/%s", c.BaseURL, pwId)
 	method := http.MethodGet
@@ -36,20 +37,43 @@ func (c *Client) GetPassword(pwId string) (PasswordResponse, error) {
 	return responseObject, nil
 }
 
-// Search for password by name
+// SearchPassword Search for password by name
 func (c *Client) SearchPassword(request PasswordSearchRequest) (PasswordSearchResponse, error) {
-	url := fmt.Sprintf("%s/items/search", c.BaseURL)
-	method := http.MethodPost
+	baseURL := fmt.Sprintf("%s/items/search", c.BaseURL)
+	method := http.MethodGet
 	var responseObject PasswordSearchResponse
 	var err error
 
-	body, err := json.Marshal(request)
-	if err != nil {
-		return responseObject, err
+	// Build query parameters
+	params := make([]string, 0)
+	if request.Query != "" {
+		params = append(params, fmt.Sprintf("query=%s", request.Query))
+	}
+	if request.VaultId != "" {
+		params = append(params, fmt.Sprintf("vaultId=%s", request.VaultId))
+	}
+	if len(request.Colors) > 0 {
+		colorStrs := make([]string, len(request.Colors))
+		for i, color := range request.Colors {
+			colorStrs[i] = fmt.Sprintf("%d", color)
+		}
+		params = append(params, fmt.Sprintf("colors=%s", strings.Join(colorStrs, ",")))
+	}
+	if len(request.Tags) > 0 {
+		params = append(params, fmt.Sprintf("tags=%s", strings.Join(request.Tags, ",")))
+	}
+	if request.IncludeShared {
+		params = append(params, "includeShared=true")
+	}
+
+	// Add query parameters to URL if any
+	url := baseURL
+	if len(params) > 0 {
+		url = fmt.Sprintf("%s?%s", baseURL, strings.Join(params, "&"))
 	}
 
 	// HTTP request
-	response, _, err := c.sendRequest(method, url, bytes.NewReader(body))
+	response, _, err := c.sendRequest(method, url, nil)
 	if err != nil {
 		return responseObject, err
 	}

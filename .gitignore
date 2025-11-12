@@ -28,3 +28,6 @@ go.work
 
 # JetBrains
 .idea
+
+# Environment variables
+.env
